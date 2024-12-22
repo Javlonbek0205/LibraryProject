@@ -185,11 +185,11 @@ h2 {
   font-family: Poppins;
   font-size: 36px; }
 
-.main {
+.main_sign {
   background: #f8f8f8;
-  padding: 150px 0;
+  padding: 60px 0;
   font-size: 13px;
-  line-height: 1.8;
+  line-height: 2;
   color: #222;
   font-weight: 400;
   font-family: Poppins;
@@ -249,7 +249,7 @@ h2 {
   -ms-transform: translate(-50%, -50%); }
 
 .signup {
-  margin-bottom: 150px; }
+  margin-bottom: 0; }
 
 .signup-content {
   padding: 75px 0; }
@@ -311,8 +311,8 @@ figure {
 
 .form-group {
   position: relative;
-  margin-bottom: 25px;
-  overflow: hidden; }
+  margin-top: 30px;
+   }
   .form-group:last-child {
     margin-bottom: 0px; }
 
@@ -351,10 +351,10 @@ input[type=checkbox]:not(old) {
   display: none; }
 
 input[type=checkbox]:not(old) + label {
-  display: inline-block;
-  line-height: 1.5em;
-  margin-top: 6px; }
-
+    display: inline-block;
+    margin-left: 5px;
+    margin-top: 6px;
+}
 input[type=checkbox]:not(old) + label > span {
   display: inline-block;
   width: 13px;
@@ -398,8 +398,8 @@ input[type=checkbox]:not(old):checked + label > span:before {
 
 label {
   position: absolute;
-  left: 0;
-  top: 50%;
+  left: 3px;
+  top: 53%;
   transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
@@ -409,6 +409,14 @@ label {
 
 .label-has-error {
   top: 22%; }
+
+.invalid-feedback {
+    color: red !important; /* Rangni majburiy qilib qo'yish */
+    margin-top: -24px;
+    margin-left: 10px;
+    font-size: 12px;
+    display: block; /* Xabarni ko'rsatish */
+}
 
 label.error {
   position: relative;
@@ -607,9 +615,6 @@ label.valid {
     font-size: 28px; /* Adjust the font size for smaller screens */
   }
 
-  .main {
-    padding: 60px 0; /* Reduce padding on smaller screens */
-  }
 }
 
 /* For tablets */
@@ -631,5 +636,8 @@ label.valid {
 
   h2 {
     font-size: 36px; /* Larger font size for desktop */
+  }
+  .main_sign{
+      padding: 60px 0;
   }
 }
