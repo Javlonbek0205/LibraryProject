@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ subject }}</title>
+    <title>Confirm email</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -22,7 +22,7 @@
         .email-header {
             background: linear-gradient(to right, #003366, #7697c1, #400d0d);
             color: white;
-            padding: 20px;  
+            padding: 20px;
             text-align: center;
         }
         .email-content {
@@ -57,7 +57,7 @@
             <h1>Assalomu alaykum!</h1>
         </div>
         <div class="email-content">
-            <p>{{ subject }}</p>
+            <p>Tasdiqlash uchun ushbu tugmani bosing</p>
             <a href="http://localhost:8000{% url 'confirm_email' uidb64=uid token=token %}" class="button" style="color: white">Confirm Email</a>
         </div>
         <div class="email-footer">

@@ -3,7 +3,7 @@
 {%  block  content %}
     <link rel="stylesheet" href="{% static 'fonts/material-icon/css/material-design-iconic-font.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_signup.css' %}">
-    <div class="main">
+   <div class="main_sign">
         <!-- Sign up form -->
         <section class="signup">
             <div class="container_sign">
@@ -13,16 +13,16 @@
                         <form method="POST" class="register-form" id="register-form">{% csrf_token %}
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="first_name" id="name" placeholder="First Name"/>
+                                <input type="text" name="first_name" id="name" placeholder="First Name" value="{{ form.first_name.value|default:'' }}"/>
                             </div>
                             {% if form.errors.first_name.0 %}
-                            <div class="invalid-feedback">
+                            <div class="invalid-feedback">  
                                 {{ form.errors.first_name.0 }}
                             </div>
                         {% endif %}
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="last_name" id="name" placeholder="Last Name"/>
+                                <input type="text" name="last_name" id="name" placeholder="Last Name" value="{{ form.last_name.value|default:'' }}"/>
                             </div>
                         {% if form.errors.last_name.0 %}
                             <div class="invalid-feedback" style="">
@@ -31,7 +31,7 @@
                         {% endif %}
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" id="name" placeholder="Username"/>
+                                <input type="text" name="username" id="name" placeholder="Username" value="{{ form.username.value|default:'' }}"/>
                             </div>
                         {% if form.errors.username.0 %}
                             <div class="invalid-feedback">
@@ -40,7 +40,7 @@
                         {% endif %}
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                <input type="email" name="email" id="email" placeholder="Your Email"/>
+                                <input type="email" name="email" id="email" placeholder="Your Email" value="{{ form.email.value|default:'' }}"/>
                             </div>
                         {% if form.errors.email.0 %}
                             <div class="invalid-feedback">

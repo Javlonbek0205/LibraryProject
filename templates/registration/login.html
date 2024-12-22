@@ -3,7 +3,7 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'fonts/material-icon/css/material-design-iconic-font.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_signup.css' %}">
-<div class="main">
+    <div class="main_sign">
         <!-- Sing in  Form -->
         <section class="sign-in">
             <div class="container_sign">
@@ -17,22 +17,27 @@
                         <form method="POST" class="register-form" id="login-form">{% csrf_token %}
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" id="your_name" placeholder="Username"/>
+                                <input type="text" name="username" id="your_name" placeholder="Username" value="{{ form.username.value|default:'' }}"/>
                             </div>
-                            {% if form.errors.username %}
+                            {% if form.errors.username.0 %}
                             <div class="invalid-feedback">
-                                {{ form.errors.username }}
+                                {{ form.errors.username.0 }}
                             </div>
-                        {% endif %}
+                            {% endif %}
                             <div class="form-group">
                                 <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
                                 <input type="password" name="password" id="your_pass" placeholder="Password"/>
                             </div>
-                        {% if form.errors.password %}
+                            {% if form.errors.password.0 %}
                             <div class="invalid-feedback">
-                                {{ form.errors.password }}
+                                {{ form.errors.password.0 }}
                             </div>
-                        {% endif %}
+                            {% endif %}
+                            {% if form.non_field_errors.0 %}
+                            <div class="invalid-feedback">
+                                {{ form.non_field_errors.0 }}
+                            </div>
+                            {% endif %}
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                                 <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
