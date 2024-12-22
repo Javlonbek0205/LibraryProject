@@ -1,11 +1,8 @@
-from enum import verify
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .forms import UserRegistrationForm
@@ -14,7 +11,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 # Create your views here.
 def signup_view(request):
-    form = None
+    form = UserRegistrationForm()
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -25,15 +22,13 @@ def signup_view(request):
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(str(user.pk).encode())
             subject = 'Activate Your Account'
-            to_email=user.email
-            context = {
+            send_email('registration/send_email.html',
+                       subject, user.email, {
                 'uid': uid,
                 'token': token,
-            }
-            send_email('registration/send_email.html',
-                       subject, to_email, context)
+            })
 
-            return redirect('verify')
+            return redirect(reverse_lazy('verify'))
     return render(request, 'registration/signup.html', {'form': form})
 
 def verify_email_view(request):
@@ -46,7 +41,7 @@ def confirm_email(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and default_token_generator.check_token(user, token):
+    if user and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
         messages.success(request, 'Your account is now active. Please login.')
@@ -58,7 +53,7 @@ def confirm_email(request, uidb64, token):
 
 
 def login_view(request):
-    form = None
+    form = AuthenticationForm()
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():

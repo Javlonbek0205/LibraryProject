@@ -8,7 +8,7 @@ urlpatterns=[
     path('login/',  login_view, name='login'),
 
     path('verify/', verify_email_view, name='verify'),
-    path('confirm_email/', confirm_email, name='confirm_email'),
+    path('confirm_email/<uidb64>/<token>/', confirm_email, name='confirm_email'),
 
     #path('send_email/', email_send_view, name='send_email'),
 ]
