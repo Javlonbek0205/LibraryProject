@@ -96,7 +96,7 @@
 				<div class="col-md-12">
 
 					<div class="btn-wrap align-right">
-						<a href="#" class="btn-accent-arrow">View all products <i
+						<a href="{% url 'all_books' %}" class="btn-accent-arrow">View all products <i
 								class="icon icon-ns-arrow-right"></i></a>
 					</div>
 
@@ -223,9 +223,20 @@
                             </div>
                         </div>
                     {% endfor %}
+
                 </div>
             </div>
         </div>
+        <div class="row">
+				<div class="col-md-12">
+
+					<div class="btn-wrap align-right">
+						<a href="{% url 'all_books' %}" class="btn-accent-arrow">View all products <i
+								class="icon icon-ns-arrow-right"></i></a>
+					</div>
+
+				</div>
+			</div>
     </div>
 </section>
 
@@ -516,7 +527,11 @@
                 success: function(response) {
                     if (response.status === 'success') {
                         alert(response.message);  // Muvaffaqiyat xabari
-                    }else {
+                    } else if (response.status === 'unauthenticated') {
+                    // Ro'yxatdan o'tmagan foydalanuvchilarni login sahifasiga yo'naltirish
+                    alert('You need to log in to add items to the cart.');
+                    window.location.href = "{% url 'login' %}";
+                    } else {
                         alert('Error: ' + response.message);  // Xato xabari
                     }
                 },
