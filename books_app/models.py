@@ -12,7 +12,7 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-class Category(models.Model):
+class Category(BaseModel):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     def __str__(self):
@@ -24,7 +24,7 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
-class Books(models.Model):
+class Books(BaseModel):
     class Availability(models.TextChoices):
         in_stock = 'In stock', 'In stock'
         out_of_stock = 'Out of stock', 'Out of stock'
@@ -66,12 +66,11 @@ class Books(models.Model):
         return self.title
 
 
-class Reviews(models.Model):
+class Reviews(BaseModel):
     book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     text = models.TextField()
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.user}-{self.book}"
 
