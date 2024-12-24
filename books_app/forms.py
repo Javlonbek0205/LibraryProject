@@ -13,3 +13,19 @@ class OrderForm(ModelForm):
     class Meta:
         model= OrderItem
         fields = ['quantity']
+
+class BooksForm(ModelForm):
+    class Meta:
+        model = Books
+        fields = ('title',
+            'author',
+            'price',
+            'category',
+            'format',
+            'availability',
+            'book_image',
+            'description',
+            'publisher',
+            'isbn',
+            'quantity',
+        )
