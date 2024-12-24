@@ -48,48 +48,62 @@ Ushbu loyiha Django yordamida yaratilgan kitoblar kutubxonasi boshqaruv tizimidi
    python manage.py runserver
    ```
 
-## Foydalanilgan Modellar
+# Authentication and Email Verification Views
 
-Quyidagi modellar loyihada ishlatilgan:
+Ushbu loyihada foydalanuvchilarni ro‘yxatdan o‘tkazish, elektron pochta orqali tasdiqlash, tizimga kirish va akkauntni faollashtirish jarayonlari qamrab olingan.
 
-### `Category` Modeli:
-- **name**: Toifa nomi.
-- **description**: Toifa haqida qisqacha ma'lumot.
+## 1. signup_view: Foydalanuvchini ro‘yxatdan o‘tkazish
+**Funksional imkoniyatlari:**
+- `UserRegistrationForm` yordamida foydalanuvchi ma’lumotlarini yig‘adi.
+- Agar POST so‘rovi orqali yuborilgan ma’lumotlar `form.is_valid()` bo‘lsa:
+  - Foydalanuvchi faolsiz (inactive) holatda saqlanadi.
+  - Foydalanuvchining tasdiqlash tokeni yaratiladi.
+  - Tasdiqlash havolasini o‘z ichiga olgan elektron pochta foydalanuvchiga yuboriladi (`send_email` yordamida).
+  - Yuborilgandan so‘ng, foydalanuvchi `verify` sahifasiga yo‘naltiriladi.
 
-### `Author` Modeli:
-- **name**: Muallif nomi.
-- **bio**: Muallifning qisqacha tarjimai holi.
+**Shablonlar:**
+- `registration/signup.html`: Ro‘yxatdan o‘tish shakli.
 
-### `Books` Modeli:
-- **title**: Kitob nomi.
-- **author**: Muallifga chet el kaliti bilan bog'langan.
-- **price**: Kitob narxi.
-- **category**: Ko'p-to-ko'p bog'lanish orqali toifalar.
-- **availability**: Kitobning mavjud holati (In stock, Out of stock, va boshqalar).
-- **format**: Kitob formati (Standard, Downloadable, External).
-- **book_image**: Kitob rasmi.
-- **book_pdf**: Kitobning PDF versiyasi.
-- **published_date**: Nashr etilgan sana.
-- **owner**: Kitob egasi (foydalanuvchi).
-- **average_rating**: Kitobning o'rtacha bahosi (hisoblanadi).
+## 2. verify_email_view: Tasdiqlashni kutish sahifasi
+Foydalanuvchiga elektron pochta tasdiqlash talab qilinayotganligini bildiradi.
 
-### `Reviews` Modeli:
-- **book**: Sharh berilgan kitobga chet el kaliti bilan bog'lanish.
-- **user**: Sharhni qoldirgan foydalanuvchi.
-- **text**: Sharh matni.
-- **rating**: Baholash (1 dan 5 gacha).
-- **created_at**: Sharh qo'shilgan vaqt.
+**Shablon:**
+- `registration/verify.html`.
 
-## Qo'shimcha Ma'lumotlar
+## 3. confirm_email: Elektron pochta tasdiqlash
+- Elektron pochta orqali yuborilgan UID va token orqali foydalanuvchi aniqlanadi.
+- Agar token haqiqiy bo‘lsa:
+  - Foydalanuvchi akkaunti faollashtiriladi.
+  - Foydalanuvchi login sahifasiga yo‘naltiriladi.
+- Agar token noto‘g‘ri yoki muddati tugagan bo‘lsa:
+  - `signup` sahifasiga qayta yo‘naltiriladi.
+  - Foydalanuvchiga xatolik xabari ko‘rsatiladi.
 
-- **Media Fayllar**:
-  - Kitoblar uchun rasmlar `images/` papkasida saqlanadi.
-  - Kitoblarning PDF fayllari `books_pdf/` papkasida saqlanadi.
+## 4. login_view: Tizimga kirish
+**Funksional imkoniyatlari:**
+- Foydalanuvchi `AuthenticationForm` orqali tizimga kirish uchun ma’lumot kiritadi.
+- Agar kiritilgan ma’lumotlar to‘g‘ri bo‘lsa:
+  - Foydalanuvchi autentifikatsiya qilinadi va tizimga kiradi.
+  - Foydalanuvchi `home` sahifasiga yo‘naltiriladi.
+- Agar ma’lumotlar noto‘g‘ri bo‘lsa:
+  - Xatolik xabari ko‘rsatiladi.
 
-- **Validatsiyalar**:
-  - Faqat quyidagi fayl turlari qabul qilinadi:
-    - Rasmlar: `.jpg`, `.jpeg`, `.png`, `.bmp`, `.webp`
-    - Kitob fayllari: `.pdf`, `.epub`, `.docx`
+**Shablonlar:**
+- `registration/login.html`: Tizimga kirish shakli.
+
+## Elektron pochta yuborish jarayoni
+- Elektron pochta uchun tasdiqlash havolasi `registration/send_email.html` shablonidan yaratiladi.
+- Bu tasdiqlash havolasi foydalanuvchining akkauntini faollashtirish imkonini beradi.
+
+## Kodning asosiy ishlash tartibi
+1. **Ro‘yxatdan o‘tish:** Foydalanuvchi o‘z ma’lumotlarini kiritadi va `signup_view` orqali tasdiqlash havolasini oladi.
+2. **Tasdiqlash:** Foydalanuvchi elektron pochta orqali yuborilgan havolani bosib, akkauntini faollashtiradi (`confirm_email`).
+3. **Tizimga kirish:** Faollashtirilgan foydalanuvchi tizimga kirib, `login_view` yordamida sayt xizmatlaridan foydalanadi.
+
+## Izoh
+- Elektron pochta funksiyasi uchun `.env` faylida maxfiy o‘zgaruvchilar sozlangan bo‘lishi kerak (`EMAIL_HOST`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `SECRET_KEY` va hokazo).
+- Batafsil ma’lumotni `.env.example` faylidan olishingiz mumkin.
+
 
 ## Muallif
 Loyiha muallifi: [Javlonbek0205](https://github.com/Javlonbek0205)
