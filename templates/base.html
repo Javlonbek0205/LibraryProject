@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>BookSaw - Free Book Store HTML CSS Template</title>
+	<title>{% block title %} {% endblock title %}</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,7 +106,8 @@
 
 										<ul>
 											<li class="active"><a href="{% url 'all_books' %}">All Books</a></li>
-											<li class="active"><a href="#">About</a></li>
+											<li class="active"><a href="{% url 'my_books' %}">My Books</a></li>
+											<li class="active"><a href="{% url 'book_create' %}">Add Book</a></li>
 										</ul>
 
 									</li>
