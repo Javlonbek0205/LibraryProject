@@ -1,20 +1,21 @@
 from idlelib.debugobj import dispatch
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Avg
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView, FormView
-from .forms import ReviewCreateForm, OrderForm
+from django.views.generic import ListView, DetailView, FormView, CreateView
+from .forms import ReviewCreateForm, OrderForm, BooksForm
 from .models import Books, Reviews, Category, Cart, OrderItem
 # Create your views here.
 
 class BookListView(ListView):
     model = Books
     categories = Category.objects.all()
-    queryset = Books.objects.all()
+    queryset = Books.objects.filter(availability='On sale').order_by('-id')[:8]
     context_object_name = 'books'
     last_books = Books.objects.filter(availability='On sale').order_by('-average_rating')[:10]
     featured_books = Books.objects.filter(average_rating__gte=4, average_rating__lte=5,
@@ -47,8 +48,8 @@ class BookListView(ListView):
                'query': query}
     return render(request, 'index.html', context)"""
 
-@method_decorator(login_required, name='dispatch')
-class BookDetailView(FormView, DetailView):
+
+class BookDetailView(LoginRequiredMixin,FormView, DetailView):
     model = Books
     template_name = 'book_detail.html'
     context_object_name = 'book'
@@ -121,3 +122,29 @@ def add_to_cart_ajax(request):
             return JsonResponse({'message': 'Book added to cart successfully!', 'status': 'success'})
     return JsonResponse({'message': 'Invalid request', 'status': 'error'})
 
+
+class BookCreateView(LoginRequiredMixin, CreateView):
+    model = Books
+    form_class = BooksForm
+    template_name = 'book_create.html'
+    success_url = reverse_lazy('all_books')
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            form.instance.owner = request.user
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+class MyBookListView(LoginRequiredMixin, ListView):
+    model = Books
+    context_object_name = 'books'
+    categories = Category.objects.all()
+    template_name = 'my_book.html'
+    extra_context = {
+        'categories': categories,
+    }
+    def get_queryset(self, **kwargs):
+        books = self.request.user.books.all()
+        return books
