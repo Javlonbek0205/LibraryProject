@@ -2410,6 +2410,55 @@ footer#footer {
   bottom: 0;
 }
 
+.button-container {
+    display: flex; /* Yonma-yon chiqarish */
+    justify-content: center; /* Markazga joylash */
+    align-items: center; /* Vertikal hizalash */
+    gap: 10px; /* Tugmalar orasidagi masofa */
+}
+
+/* Umumiy tugma uslubi */
+.add-to-cart.btn {
+    display: inline-flex; /* Ikonka va yozuvni yonma-yon qo‘yish */
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    gap: 8px; /* Ikonka va yozuv orasidagi masofa */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Delete tugmasi */
+.add-to-cart.btn.delete {
+    background-color: red;
+    color: white;
+}
+
+.add-to-cart.btn.delete i {
+    color: white; /* Ikonka oq rangda */
+}
+
+/* Edit tugmasi */
+.add-to-cart.btn.edit {
+    background-color: rgba(102, 230, 102, 0.8);
+    color: black;
+    margin-bottom: 69px;
+}
+
+.add-to-cart.btn.edit i {
+    color: black; /* Ikonka qora rangda */
+}
+
+/* Hover effekti */
+.add-to-cart.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .product-item figcaption {
   margin-top: 30px;
   margin-bottom: 30px;
