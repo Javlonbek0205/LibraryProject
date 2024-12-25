@@ -2,12 +2,14 @@ from idlelib.debugobj import dispatch
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Avg
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.context_processors import request
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView, FormView, CreateView
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from .forms import ReviewCreateForm, OrderForm, BooksForm
 from .models import Books, Reviews, Category, Cart, OrderItem
 # Create your views here.
@@ -148,3 +150,30 @@ class MyBookListView(LoginRequiredMixin, ListView):
     def get_queryset(self, **kwargs):
         books = self.request.user.books.all()
         return books
+
+class BookUpdateView(LoginRequiredMixin, UpdateView):
+    model = Books
+    form_class = BooksForm
+    template_name = 'book_update.html'
+    success_url = reverse_lazy('my_books')
+    def post(self, request, *args, **kwargs):
+        book = self.get_object()
+        if book.owner != request.user:
+            return PermissionDenied("You do not have permission to delete this book.")
+        form = self.form_class(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            return  HttpResponseRedirect(self.success_url)
+        return render(request, self.template_name, {'form': form})
+
+
+class BookDeleteView(LoginRequiredMixin, DeleteView):
+    model = Books
+    success_url = reverse_lazy('my_books')
+    template_name = 'book_delete.html'
+    def dispatch(self, request, *args, **kwargs):
+        book = self.get_object()
+        if book.owner != request.user:
+            return PermissionDenied("You do not have permission to delete this book.")
+
+        return super().dispatch(request, *args, **kwargs)
