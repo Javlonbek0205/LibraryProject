@@ -33,12 +33,13 @@
                                         <figure class="product-style">
                                             <a href="{% url 'books-detail' book.pk %}"><img src="{{ book.book_image.url }}" alt="Books" class="product-item"></a>
                                             <div class="button-container">
-                                                <button type="button" class="add-to-cart btn delete">
+                                                <form action="{% url 'book-delete' book.pk %}"><button type="submit" class="add-to-cart btn delete">
                                                     <i class="fa fa-trash"></i> Delete
-                                                </button>
-                                                <button type="button" class="add-to-cart btn edit">
+                                                </button></form>
+                                                <form action="{% url 'book-update' book.pk %}">
+                                                <button type="submit" class="add-to-cart btn edit">
                                                     <i class="fa fa-pencil"></i> Edit
-                                                </button>
+                                                </button></form>
                                             </div>
                                         </figure>
                                         <figcaption>
@@ -66,12 +67,13 @@
                                             <figure class="product-style">
                                                 <a href="{% url 'books-detail' book_filter.pk %}"><img src="{{ book_filter.book_image.url }}" alt="Books" class="product-item"></a>
                                                 <div class="button-container">
-                                                <button type="button" class="add-to-cart btn delete" data-product-tile="add-to-cart" data-book-id="{{ book.pk }}">
+                                                <form action="{% url 'book-delete' book_filter.pk %}"><button type="submit" class="add-to-cart btn delete">
                                                     <i class="fa fa-trash"></i> Delete
-                                                </button>
-                                                <button type="button" class="add-to-cart btn edit" data-product-tile="add-to-cart" data-book-id="{{ book.pk }}">
+                                                </button></form>
+                                                <form action="{% url 'book-update' book_filter.pk %}">
+                                                <button type="submit" class="add-to-cart btn edit">
                                                     <i class="fa fa-pencil"></i> Edit
-                                                </button>
+                                                </button></form>
                                             </div>
                                             </figure>
                                             <figcaption>
